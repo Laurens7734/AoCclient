@@ -33,11 +33,19 @@ namespace AoCclient
 
         public async void getResponse(string text)
         {
-            AocRequest request = new AocRequest(comboBox1.SelectedIndex + 1, radioButton1.Checked ? 1 : 2, new List<string>(text.Split("\n")));
-            var json = JsonSerializer.Serialize(request);
-            var response = await _httpClient.PostAsync(_url + "/answer", new StringContent(json, Encoding.UTF8, "application/json"));
-            if (response.IsSuccessStatusCode)
-                answerTextBox.Text = await response.Content.ReadAsStringAsync();
+            try
+            {
+                AocRequest request = new AocRequest(comboBox1.SelectedIndex + 1, radioButton1.Checked ? 1 : 2, new List<string>(text.Split("\n")));
+                var json = JsonSerializer.Serialize(request);
+                var response = await _httpClient.PostAsync(_url + "/answer", new StringContent(json, Encoding.UTF8, "application/json"));
+                if (response.IsSuccessStatusCode)
+                    answerTextBox.Text = await response.Content.ReadAsStringAsync();
+            }
+            catch(Exception e)
+            {
+                //no one cares
+            }
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
